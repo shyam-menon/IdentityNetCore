@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using IdentityNetCore.Models;
 using IdentityNetCore.Service;
@@ -14,13 +12,13 @@ namespace IdentityNetCore.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IEmailSender emailSender;
+        private readonly IEmailSender _emailSender;
 
         public IdentityController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             this._signInManager = signInManager;
-            this.emailSender = emailSender;
+            this._emailSender = emailSender;
         }
         public async Task<IActionResult> Signup()
         {
@@ -48,7 +46,7 @@ namespace IdentityNetCore.Controllers
                     if (result.Succeeded)
                     {
                         var confirmationLink = Url.ActionLink("ConfirmEmail", "Identity", new {userId = user.Id , @token=token });
-                        await emailSender.SendEmailAsync("info@mydomain.com", user.Email, "Confirm your email address", confirmationLink);
+                        await _emailSender.SendEmailAsync("info@mydomain.com", user.Email, "Confirm your email address", confirmationLink);
 
                         return RedirectToAction("Signin");
                     }
@@ -87,7 +85,7 @@ namespace IdentityNetCore.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index","Home");
                 }
                 else
                 {

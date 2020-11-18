@@ -4,7 +4,7 @@ namespace IdentityNetCore.Models
 {
     public class SigninViewModel
     {
-        [Required(ErrorMessage ="User nanme must be provided.")]
+        [Required(ErrorMessage ="User name must be provided.")]
         [DataType(DataType.EmailAddress)]
         public string Username { get; set; }
 
